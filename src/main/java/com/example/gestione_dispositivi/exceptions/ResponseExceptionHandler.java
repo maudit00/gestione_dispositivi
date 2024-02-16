@@ -19,6 +19,12 @@ public class ResponseExceptionHandler {
     return new CustomError(e.getMessage());
   }
 
+  @ExceptionHandler(DeviceNotAvaiableException.class)
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  public CustomError DeviceNotAvaiableException(DeviceNotAvaiableException e) {
+    return new CustomError(e.getMessage());
+  }
+
   @ExceptionHandler(Exception.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public CustomError ExceptionHandler(Exception e) {

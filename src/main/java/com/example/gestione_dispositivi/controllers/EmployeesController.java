@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.Cloudinary;
 import com.example.gestione_dispositivi.models.EmployeeRequest;
 import com.example.gestione_dispositivi.models.Employees;
-import com.example.gestione_dispositivi.repositories.EmployeesRepository;
 import com.example.gestione_dispositivi.services.EmployeesService;
 
 @RestController

@@ -2,6 +2,7 @@ package com.example.gestione_dispositivi.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class Employees {
   private String email;
   private String avatar;
   @OneToMany(mappedBy = "employee")
+  @JsonIgnore
   private List<Devices> devices;
 
 }

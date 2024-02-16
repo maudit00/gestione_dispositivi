@@ -1,10 +1,15 @@
 package com.example.gestione_dispositivi.services;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
+import com.example.gestione_dispositivi.exceptions.NotFoundException;
 import com.example.gestione_dispositivi.models.EmployeeRequest;
 import com.example.gestione_dispositivi.models.Employees;
 import com.example.gestione_dispositivi.repositories.EmployeesRepository;
@@ -18,17 +23,49 @@ public class EmployeesService {
   @Autowired
   private EmployeesRepository employeesRepository;
 
+  @Autowired
+  private JavaMailSenderImpl javaMailSenderImpl;
+
   public Page<Employees> getAll(Pageable pageable) {
     return employeesRepository.findAll(pageable);
   }
 
-  public Employees getById(int id){
+  public Employees getById(int id) {
     return employeesRepository.findById(id)
-    .orElseThrow(() -> new NotFoundException("Employee with id="+ id + " not found!");
+        .orElseThrow(() -> new NotFoundException("Employee with id=" + id + " not found!"));
   }
 
-  public Employees save(EmployeeRequest employeeRequest){
+  public Employees save(EmployeeRequest employeeRequest) {
 
-    Employees e = new Employees( employeeRequest.getNome(), employeeRequest.getCognome(), employeeRequest.getEmail(),)
+    Employees e = new Employees();
+    e.setNome(employeeRequest.getNome());
+    e.setCognome(employeeRequest.getCognome());
+    e.setEmail(employeeRequest.getEmail());
+
+    return employeesRepository.save(e);
   }
+
+  public Employees updateEmployee(int id, EmployeeRequest employeeRequest) {
+    Employees e = getById(id);
+
+    e.setNome(employeeRequest.getNome());
+    e.setCognome(employeeRequest.getCognome());
+    e.setEmail(employeeRequest.getEmail());
+
+    return employeesRepository.save(e);
+  }
+
+  public void deleteEmployee(int id) {
+    Employees e = getById(id);
+    employeesRepository.delete(e);
+  }
+
+  private void sendMail(String email) {
+    SimpleMailMessage message = new SimpleMailMessage();
+    message.setTo(email);
+    message.setSubject("Employee Registration Successfull");
+    message.setText("Congrats on registering to the Factory Portal");
+    javaMailSenderImpl.send(message);
+  }
+
 }

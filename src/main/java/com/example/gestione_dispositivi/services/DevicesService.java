@@ -29,7 +29,7 @@ public class DevicesService {
 
   public Devices getById(int id){
     return devicesRepository.findById(id)
-    .orElseThrow(() -> new NotFoundException("Device with id=" + id + " not found!"))
+    .orElseThrow(() -> new NotFoundException("Device with id=" + id + " not found!"));
   }
 
   public Devices save(DeviceRequest deviceRequest) {

@@ -26,7 +26,7 @@ public class Devices {
   @SequenceGenerator(name = "employee_id", allocationSize = 1, initialValue = 1)
   private int id;
 
-  private String nome;
+  private String name;
   @ManyToOne
   @JoinColumn(name = "employee_id")
   private Employees employee;

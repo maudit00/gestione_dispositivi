@@ -23,6 +23,4 @@ public class EmployeeRequest {
   private String cognome;
   @Email(message = "Inserire un'email valida")
   private String email;
-  private String avatar;
-  private List<Devices> devices;
 }

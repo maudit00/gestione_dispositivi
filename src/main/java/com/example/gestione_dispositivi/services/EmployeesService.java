@@ -41,11 +41,12 @@ public class EmployeesService {
     e.setNome(employeeRequest.getNome());
     e.setCognome(employeeRequest.getCognome());
     e.setEmail(employeeRequest.getEmail());
+    sendMail(e.getEmail());
 
     return employeesRepository.save(e);
   }
 
-  public Employees updateEmployee(int id, EmployeeRequest employeeRequest) {
+  public Employees update(int id, EmployeeRequest employeeRequest) {
     Employees e = getById(id);
 
     e.setNome(employeeRequest.getNome());
@@ -66,6 +67,12 @@ public class EmployeesService {
     message.setSubject("Employee Registration Successfull");
     message.setText("Congrats on registering to the Factory Portal");
     javaMailSenderImpl.send(message);
+  }
+
+  public Employees uploadAvatar(int id, String url) {
+    Employees e = getById(id);
+    e.setAvatar(url);
+    return employeesRepository.save(e);
   }
 
 }

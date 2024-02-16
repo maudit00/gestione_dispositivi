@@ -14,6 +14,7 @@ public class DeviceRequest {
 
   @NotNull(message = "Device's name can't be null!")
   private String name;
+  private int idEmployee;
   @NotNull(message = "Type can't be null!")
   private DeviceType deviceType;
   @NotNull(message = "Status can't be null!")

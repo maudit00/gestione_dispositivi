@@ -8,6 +8,7 @@ import com.example.gestione_dispositivi.models.LoginRequest;
 import com.example.gestione_dispositivi.security.JwtTools;
 import com.example.gestione_dispositivi.services.EmployeesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,8 @@ public class AuthController {
     private EmployeesService employeesService;
     @Autowired
     private JwtTools jwtTools;
+    @Autowired
+    private PasswordEncoder encoder;
 
     @PostMapping("/auth/register")
     public Employees register(@RequestBody @Validated EmployeeRequest employeeRequest, BindingResult bindingResult){
@@ -37,12 +40,25 @@ public class AuthController {
         }
 
         Employees employee = employeesService.getByUsername(loginRequest.getUsername());
-
-        if (employee.getPassword().equals(loginRequest.getPassword())){
+        if(encoder.matches(loginRequest.getPassword(), employee.getPassword())){
             return jwtTools.createToken(employee);
+        } else {
+         throw new LoginException("User/password errati");
         }
-        else {
-            throw new LoginException("password o username errati");
+    }  @PostMapping("/auth/login")
+    public String login(@RequestBody @Validated LoginRequest loginRequest, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new BadRequestException(bindingResult.getAllErrors().toString());
         }
+
+        Employees employees = employeesService.getByUsername(loginRequest.getUsername());
+
+        if(encoder.matches(loginRequest.getPassword(), employees.getPassword())){
+            return jwtTools.createToken(employees);
+        }
+        else{
+            throw new LoginFaultException("username/password errate");
+        }
+
     }
 }

@@ -19,10 +19,12 @@ public class JwtTools {
     @Value("${spring.jwt.expirationMs")
     private String expirationMs;
 
-    public String createToken(Employees employee){
-        return Jwts.builder().subject(employee.getUsername()).issuedAt(new Date(System.currentTimeMillis())).
-                expiration(new Date(System.currentTimeMillis())).compact();
+    public String createToken(Employees employees){
+        return Jwts.builder().subject(employees.getUsername()).issuedAt(new Date(System.currentTimeMillis())).
+                expiration(new Date(System.currentTimeMillis()+Long.parseLong(expirationMs))).
+                signWith(Keys.hmacShaKeyFor(secret.getBytes())).compact();
     }
+
 
     public void validateToken(String token){
         try {

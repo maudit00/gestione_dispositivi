@@ -45,6 +45,7 @@ public class EmployeesService {
     e.setNome(employeeRequest.getNome());
     e.setCognome(employeeRequest.getCognome());
     e.setEmail(employeeRequest.getEmail());
+    e.setUsername(employeeRequest.getUsername());
     e.setRole(Role.USER);
     e.setPassword(encoder.encode(employeeRequest.getPassword()));
     sendMail(e.getEmail());

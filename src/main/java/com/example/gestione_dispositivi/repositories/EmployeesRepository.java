@@ -5,10 +5,13 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.example.gestione_dispositivi.models.Employees;
 
+import java.util.Optional;
+
 /**
  * EmployeesRepository
  */
 public interface EmployeesRepository
     extends JpaRepository<Employees, Integer>, PagingAndSortingRepository<Employees, Integer> {
 
+    Optional<Employees> findByUsername(String username);
 }

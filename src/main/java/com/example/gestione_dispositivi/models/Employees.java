@@ -25,6 +25,8 @@ public class Employees {
 
   private String nome;
   private String cognome;
+  private String password;
+  private String username;
   private String email;
   private String avatar;
   @OneToMany(mappedBy = "employee")

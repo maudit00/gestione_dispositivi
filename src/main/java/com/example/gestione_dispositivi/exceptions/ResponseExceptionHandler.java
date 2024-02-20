@@ -19,8 +19,20 @@ public class ResponseExceptionHandler {
     return new CustomError(e.getMessage());
   }
 
-  @ExceptionHandler(DeviceNotAvaiableException.class)
+  @ExceptionHandler(BadRequestException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public CustomError badRequestException(BadRequestException e) {
+    return new CustomError(e.getMessage());
+  }
+
+  @ExceptionHandler(UnauthorizedException.class)
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  public CustomError UnauthorizedException(UnauthorizedException e) {
+    return new CustomError(e.getMessage());
+  }
+
+  @ExceptionHandler(DeviceNotAvaiableException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   public CustomError DeviceNotAvaiableException(DeviceNotAvaiableException e) {
     return new CustomError(e.getMessage());
   }
@@ -36,4 +48,5 @@ public class ResponseExceptionHandler {
   public CustomError IOExceptionHandler(Exception e) {
     return new CustomError(e.getMessage());
   }
+
 }

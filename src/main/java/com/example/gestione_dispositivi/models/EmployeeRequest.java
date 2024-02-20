@@ -3,6 +3,7 @@ package com.example.gestione_dispositivi.models;
 import java.util.List;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -15,11 +16,9 @@ public class EmployeeRequest {
 
   private int id;
 
-  @NotNull(message = "Nome obbligatorio")
-  @NotEmpty(message = "Nome non vuoto")
+  @NotBlank(message = "Nome obbligatorio")
   private String nome;
-  @NotNull(message = "Cognome obbligatorio")
-  @NotEmpty(message = "Cognome non vuoto")
+  @NotBlank(message = "Cognome obbligatorio")
   private String cognome;
   @Email(message = "Inserire un'email valida")
   private String email;

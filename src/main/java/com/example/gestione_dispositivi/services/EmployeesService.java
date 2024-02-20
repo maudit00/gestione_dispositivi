@@ -75,4 +75,8 @@ public class EmployeesService {
     return employeesRepository.save(e);
   }
 
+  public Employees getByUsername(String username){
+    return employeesRepository.findByUsername(username).orElseThrow(()-> new NotFoundException("Username non trovato"));
+  }
+
 }

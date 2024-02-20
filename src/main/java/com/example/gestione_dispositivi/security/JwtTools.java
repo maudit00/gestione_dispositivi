@@ -14,28 +14,31 @@ import java.util.Date;
 @Component
 @PropertySource("application.properties")
 public class JwtTools {
-    @Value("${spring.jwt.secret")
+    @Value("${spring.jwt.secret}")
     private String secret;
-    @Value("${spring.jwt.expirationMs")
+    @Value("${spring.jwt.expirationMs}")
     private String expirationMs;
+
 
     public String createToken(Employees employees){
         return Jwts.builder().subject(employees.getUsername()).issuedAt(new Date(System.currentTimeMillis())).
                 expiration(new Date(System.currentTimeMillis()+Long.parseLong(expirationMs))).
                 signWith(Keys.hmacShaKeyFor(secret.getBytes())).compact();
-    }
 
+    }
 
     public void validateToken(String token){
         try {
             Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build().parse(token);
-        } catch (Exception e){
-           throw new UnauthorizedException(e.getMessage());
+        }
+        catch (Exception e){
+            throw new UnauthorizedException(e.getMessage());
         }
     }
 
-    public String extractIdFromToken (String token){
-       return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build().parseSignedClaims(token).
-       getPayload().getSubject();
+    public String extractUsernameFromToken(String token){
+        return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build().parseSignedClaims(token).
+                getPayload().getSubject();
     }
+
 }

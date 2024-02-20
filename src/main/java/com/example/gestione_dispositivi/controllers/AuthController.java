@@ -40,6 +40,7 @@ public class AuthController {
         }
 
         Employees employee = employeesService.getByUsername(loginRequest.getUsername());
+
         if(encoder.matches(loginRequest.getPassword(), employee.getPassword())){
             return jwtTools.createToken(employee);
         } else {

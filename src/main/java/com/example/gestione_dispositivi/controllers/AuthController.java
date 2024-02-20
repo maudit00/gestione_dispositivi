@@ -45,20 +45,5 @@ public class AuthController {
         } else {
          throw new LoginException("User/password errati");
         }
-    }  @PostMapping("/auth/login")
-    public String login(@RequestBody @Validated LoginRequest loginRequest, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            throw new BadRequestException(bindingResult.getAllErrors().toString());
-        }
-
-        Employees employees = employeesService.getByUsername(loginRequest.getUsername());
-
-        if(encoder.matches(loginRequest.getPassword(), employees.getPassword())){
-            return jwtTools.createToken(employees);
-        }
-        else{
-            throw new LoginFaultException("username/password errate");
-        }
-
     }
 }

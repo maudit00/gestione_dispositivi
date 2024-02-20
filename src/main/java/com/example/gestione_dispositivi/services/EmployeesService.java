@@ -2,11 +2,13 @@ package com.example.gestione_dispositivi.services;
 
 import java.io.IOException;
 
+import com.example.gestione_dispositivi.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.gestione_dispositivi.exceptions.NotFoundException;
@@ -22,6 +24,8 @@ public class EmployeesService {
 
   @Autowired
   private EmployeesRepository employeesRepository;
+  @Autowired
+  private PasswordEncoder encoder;
 
   @Autowired
   private JavaMailSenderImpl javaMailSenderImpl;
@@ -41,6 +45,8 @@ public class EmployeesService {
     e.setNome(employeeRequest.getNome());
     e.setCognome(employeeRequest.getCognome());
     e.setEmail(employeeRequest.getEmail());
+    e.setRole(Role.USER);
+    e.setPassword(encoder.encode(employeeRequest.getPassword()));
     sendMail(e.getEmail());
 
     return employeesRepository.save(e);
@@ -51,6 +57,8 @@ public class EmployeesService {
 
     e.setNome(employeeRequest.getNome());
     e.setCognome(employeeRequest.getCognome());
+    e.setUsername(employeeRequest.getUsername());
+    e.setPassword(encoder.encode(employeeRequest.getPassword()));
     e.setEmail(employeeRequest.getEmail());
 
     return employeesRepository.save(e);

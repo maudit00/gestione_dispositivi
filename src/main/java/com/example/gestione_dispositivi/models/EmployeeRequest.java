@@ -20,6 +20,10 @@ public class EmployeeRequest {
   private String nome;
   @NotBlank(message = "Cognome obbligatorio")
   private String cognome;
+  @NotBlank(message = "Cognome obbligatorio")
+  private String username;
+  @NotBlank(message = "Cognome obbligatorio")
+  private String password;
   @Email(message = "Inserire un'email valida")
   private String email;
 }

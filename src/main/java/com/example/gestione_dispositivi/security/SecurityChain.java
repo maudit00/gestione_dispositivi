@@ -1,5 +1,6 @@
 package com.example.gestione_dispositivi.security;
 
+import com.example.gestione_dispositivi.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,7 @@ public class SecurityChain {
         httpSecurity.addFilterBefore (jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll());
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/employees/**").permitAll());
+        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/employees/**").hasAuthority(Role.ADMIN.name()));
         httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/**").denyAll());
 
         return httpSecurity.build();

@@ -10,10 +10,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
+@Component
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -36,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String username = jwtTools.extractIdFromToken(token);
         Employees employee = employeesService.getByUsername(username);
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(employee, null);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(employee, null, employee.getAuthorities() );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);

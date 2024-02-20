@@ -10,6 +10,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @PropertySource("application.properties")
@@ -52,5 +54,10 @@ public class AppConfig {
     props.put("smtp.ssl.enable", ssl);
     return mailSender;
   }
+  @Bean
+  public PasswordEncoder encoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-}
+
+  }
